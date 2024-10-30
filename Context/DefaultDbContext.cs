@@ -16,7 +16,11 @@ public partial class DefaultDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Manuf> Manufs { get; set; }
+    public virtual DbSet<Doptov> Doptovs { get; set; }
+
+    public virtual DbSet<ListDoptov> ListDoptovs { get; set; }
+
+    public virtual DbSet<Manufactured> Manufactureds { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
 
@@ -26,25 +30,11 @@ public partial class DefaultDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Manuf>(entity =>
+        modelBuilder.Entity<Doptov>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("manuf_pk");
+            entity.HasKey(e => e.Id).HasName("doptov_pk");
 
-            entity.ToTable("manuf", "public2");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasColumnType("character varying")
-                .HasColumnName("name");
-        });
-
-        modelBuilder.Entity<Product>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("product_pk");
-
-            entity.ToTable("product", "public2");
+            entity.ToTable("doptov", "public1");
 
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
@@ -52,12 +42,67 @@ public partial class DefaultDbContext : DbContext
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Isactive).HasColumnName("isactive");
             entity.Property(e => e.Manufactured).HasColumnName("manufactured");
+            entity.Property(e => e.Photo)
+                .HasColumnType("character varying")
+                .HasColumnName("photo");
+            entity.Property(e => e.Price).HasColumnName("price");
+        });
+
+        modelBuilder.Entity<ListDoptov>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("list_doptov_pk");
+
+            entity.ToTable("list_doptov", "public1");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.IdTov).HasColumnName("id_tov");
+            entity.Property(e => e.Iddoptow).HasColumnName("iddoptow");
+
+            entity.HasOne(d => d.IdTovNavigation).WithMany(p => p.ListDoptovs)
+                .HasForeignKey(d => d.IdTov)
+                .HasConstraintName("list_doptov_product_fk");
+
+            entity.HasOne(d => d.IddoptowNavigation).WithMany(p => p.ListDoptovs)
+                .HasForeignKey(d => d.Iddoptow)
+                .HasConstraintName("list_doptov_doptov_fk");
+        });
+
+        modelBuilder.Entity<Manufactured>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("manufactured_pk");
+
+            entity.ToTable("manufactured", "public1");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+        });
+
+        modelBuilder.Entity<Product>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("product_pk");
+
+            entity.ToTable("product", "public1");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Doptov).HasColumnName("doptov");
+            entity.Property(e => e.Isactive).HasColumnName("isactive");
+            entity.Property(e => e.Manufactured).HasColumnName("manufactured");
             entity.Property(e => e.Photo).HasColumnName("photo");
             entity.Property(e => e.Price).HasColumnName("price");
 
+            entity.HasOne(d => d.DoptovNavigation).WithMany(p => p.Products)
+                .HasForeignKey(d => d.Doptov)
+                .HasConstraintName("product_list_doptov_fk");
+
             entity.HasOne(d => d.ManufacturedNavigation).WithMany(p => p.Products)
                 .HasForeignKey(d => d.Manufactured)
-                .HasConstraintName("product_manuf_fk");
+                .HasConstraintName("product_manufactured_fk");
         });
 
         OnModelCreatingPartial(modelBuilder);

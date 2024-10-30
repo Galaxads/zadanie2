@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AvaloniaApplication6.Models;
 
-public partial class Product
+public partial class Doptov
 {
     public int Id { get; set; }
 
@@ -19,11 +19,5 @@ public partial class Product
 
     public string? Description { get; set; }
 
-    public int? Doptov { get; set; }
-
-    public virtual ListDoptov? DoptovNavigation { get; set; }
-
     public virtual ICollection<ListDoptov> ListDoptovs { get; set; } = new List<ListDoptov>();
-
-    public virtual Manufactured? ManufacturedNavigation { get; set; }
 }

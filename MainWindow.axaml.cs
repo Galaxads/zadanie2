@@ -14,10 +14,11 @@ namespace AvaloniaApplication6
         {
             InitializeComponent();
             Listins(SavingDate.products);
-            Filtr1.SelectedIndex = 0;
-          
-            Listinss(SavingDate.manufactrur);
+            Filtr1.SelectedIndex = 0;          
+            Listinss();
+            Filtr2.ItemsSource=SavingDate.manufactrurs;
             Filtr2.SelectedIndex = 0;
+
         }
 
         private void Listins(List<Product> list)
@@ -34,14 +35,13 @@ namespace AvaloniaApplication6
             });
            ColvoKont.Text = $"Выведено записей {SavingDate.products.Count} из {SavingDate.products.Count}";
         }
-        private void Listinss(List<Manuf> list)
+        private void Listinss()
         {
-
-            Filtr2.ItemsSource = list.Select(x => new
+            for (int i = 0; i < SavingDate.manufactrur.Count-1; i++)
             {
-                x.Name,
-
-            });
+                SavingDate.manufactrurs.Add(SavingDate.manufactrur[i].Name);
+            }
+            
             
         }
 
@@ -100,17 +100,28 @@ namespace AvaloniaApplication6
             }
             else
             {
-                Listins(filtr.Where(x => x.Id == v).ToList());
+                Listins(filtr.Where(x => x.Manufactured == v).ToList());
+                ColvoKont.Text = $"Выведено записей {filtr.Where(x => x.Manufactured == v).ToList().Count()} из {SavingDate.products.Count}";
             }
         }
-        private void StackPanel_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
+        
+
+        private void Button_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-           // _SearchbarContent = tbox_searchbar.Text;
-           // _FiltrationItemIndex = cbox_filtration.SelectedIndex;
-           // _SortingItemIndex = cbox_sorting.SelectedIndex;
-            var product = lbox_books.SelectedItem as Product;
-           // Product product1 = lbox_books.SelectedIndex as Product;
-           // SavingDate.tag = product1;
+            var btn = (sender as Button)!;
+            switch (btn.Name)
+            {
+                case "Buts":
+                    string v = ((string)btn!.Tag!); //((int)btn!.Tag!)
+                    List <Product> products = Helper.defaultDbContext.Products.Where(x=>x.Name==v).ToList();
+                    SavingDate.prods = products[0];//Helper.defaultDbContext.Products.Find((v));
+                    new RedWindow1().Show();
+                    Close(); break;
+            }          
+        }
+
+        private void Button_Click_1(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
             new RedWindow1().Show();
             Close();
         }

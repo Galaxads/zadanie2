@@ -2,90 +2,61 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using AvaloniaApplication6.Models;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Linq.Expressions;
+using System;
 using Bitmap = Avalonia.Media.Imaging.Bitmap;
-using static AvaloniaApplication6.SavingDate;
-using HarfBuzzSharp;
-using System.Diagnostics;
 
 namespace AvaloniaApplication6;
 
-public partial class RedWindow1 : Window
+public partial class DoptovRed : Window
 {
     private string? _PictureFile = null;//_RedClient != null ? _RedClient.Photo : null; //изображение, которое изначально имеет объект (если оно у него есть, иначе null)
     private string? _SelectedImage = null; //выбранное изображение
-    public List<ListDoptov> Doptovs = Helper.defaultDbContext.ListDoptovs.Where(x => x.IdTov == prods.Id).ToList();
-    public RedWindow1()
+    public DoptovRed()
     {
         InitializeComponent();
         Filtr2.ItemsSource = SavingDate.manufactrurs;
         Filtr2.SelectedIndex = 0;
-        Listins(Doptovs);
-       Podgruzdan();
+        Podgruzdan();
     }
-    
-    private void Podgruzdan()
-    {
-        if (SavingDate.prods != null)
-        {
-            Id.Text = Convert.ToString(SavingDate.prods.Id);
-            Name.Text = Convert.ToString(SavingDate.prods.Name);
-            Description.Text = Convert.ToString(SavingDate.prods.Description);
-            Price.Text = Convert.ToString(SavingDate.prods.Price);
-            Filtr2.SelectedIndex = (int)SavingDate.prods.Manufactured;
-            Sclad.IsChecked = SavingDate.prods.Isactive == 1 ? true : false;
-            image_clientPhoto.Source = new Bitmap($"Assets/{SavingDate.prods.Photo}");
-            image_clientPhoto.IsVisible = true;
-            _SelectedImage = SavingDate.prods.Photo;
-        }
-        else 
-        {
-            Id.Text =Convert.ToString( SavingDate.products.Count() + 1);
-        }
-    }
-
-    private void ComboBox_SizeChanged(object? sender, Avalonia.Controls.SizeChangedEventArgs e)//комбобокс
-    {
-    }
-
-    
-
     private void Button_Click_1(object? sender, Avalonia.Interactivity.RoutedEventArgs e)//Вернуться назад
     {
-        new MainWindow().Show();
+        new RedWindow1().Show();
         Close();
     }
 
     private void Button_Click_2(object? sender, Avalonia.Interactivity.RoutedEventArgs e)//Сохранить данные
     {
-        if (SavingDate.prods == null)
+        if (SavingDate.doptov == null)
         {
-           
-               Product product = new Product();
-            product.Id =SavingDate.products.Count()+1;
-            product.Name = Name.Text; 
-            product.Description =Description.Text;
-            product.Price=Convert.ToInt32(Price.Text);
-             product.Photo=_SelectedImage;
-            product.Isactive= Sclad.IsChecked == true ? 1 : 2;
-            product.Manufactured =Filtr2.SelectedIndex;
-                Helper.defaultDbContext.Products.Add(product); //добавление в БД
-                Helper.defaultDbContext.SaveChanges(); //сохранение изменений
-            
+
+            Doptov product = new Doptov();
+            product.Id = SavingDate.doptovs.Count() + 1;
+            product.Name = Name.Text;
+            product.Description = Description.Text;
+            product.Price = Convert.ToInt32(Price.Text);
+            product.Photo = _SelectedImage;
+            product.Isactive = Sclad.IsChecked == true ? 1 : 2;
+            product.Manufactured = Filtr2.SelectedIndex;
+            ListDoptov doptov = new ListDoptov();
+            doptov.Id = SavingDate.doptovs.Count()+1;
+            doptov.IdTov = SavingDate.prods.Id;
+            doptov.Iddoptow = SavingDate.doptovs.Count() + 1;
+            Helper.defaultDbContext.Doptovs.Add(product); //добавление в БД
+            Helper.defaultDbContext.ListDoptovs.Add(doptov);
+            Helper.defaultDbContext.SaveChanges(); //сохранение изменений
+
 
         }
         else
         {
-            SavingDate.prods.Name=Name.Text;
-            SavingDate.prods.Description = Description.Text;
-            SavingDate.prods.Price = Convert.ToInt32(Price.Text);
-            SavingDate.prods.Photo = _SelectedImage;
-            SavingDate.prods.Manufactured=Filtr2.SelectedIndex;
-            SavingDate.prods.Isactive=Sclad.IsChecked==true ? 1 :2;
+            SavingDate.doptov.Name = Name.Text;
+            SavingDate.doptov.Description = Description.Text;
+            SavingDate.doptov.Price = Convert.ToInt32(Price.Text);
+            SavingDate.doptov.Photo = _SelectedImage;
+            SavingDate.doptov.Manufactured = Filtr2.SelectedIndex;
+            SavingDate.doptov.Isactive = Sclad.IsChecked == true ? 1 : 2;
 
             //Helper.user.Клиентыs.Add(newClient); //добавление в БД
             Helper.defaultDbContext.SaveChanges(); //сохранение изменений
@@ -139,53 +110,26 @@ public partial class RedWindow1 : Window
         Extensions = new List<string>() { "jpg", "png" }, //доступные расширения, отображаемые в проводнике
         Name = "Файлы изображений" //пояснение
     };
-
-    private void Button_Click_3(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void ComboBox_SizeChanged(object? sender, Avalonia.Controls.SizeChangedEventArgs e)//комбобокс
     {
-       if (SavingDate.doptov != null)
+    }
+    private void Podgruzdan()
+    {
+        if (SavingDate.doptov != null)
         {
-            new DoptovRed().Show();
-            Close();
+            Id.Text = Convert.ToString(SavingDate.doptov.Id);
+            Name.Text = Convert.ToString(SavingDate.doptov.Name);
+            Description.Text = Convert.ToString(SavingDate.doptov.Description);
+            Price.Text = Convert.ToString(SavingDate.doptov.Price);
+            Filtr2.SelectedIndex = (int)SavingDate.doptov.Manufactured;
+            Sclad.IsChecked = SavingDate.doptov.Isactive == 1 ? true : false;
+            image_clientPhoto.Source = new Bitmap($"Assets/{SavingDate.doptov.Photo}");
+            image_clientPhoto.IsVisible = true;
+            _SelectedImage = SavingDate.doptov.Photo;
         }
-       
-    }
-
-    private void Button_Click_4(object? sender, Avalonia.Interactivity.RoutedEventArgs e)//режактирование списка редактирования товаров
-    {
-        new ListDopProduct().Show();
-        Close();
-    }
-
-    private void Button_Click_5(object? sender, Avalonia.Interactivity.RoutedEventArgs e)//Редактирование готового доп товара 
-    {
-      
-            var btn = (sender as Button)!;
-            switch (btn.Name)
-            {
-                case "Buts":
-                    string v = ((string)btn!.Tag!); //((int)btn!.Tag!)
-                    List<Doptov> products = Helper.defaultDbContext.Doptovs.Where(x => x.Name == v).ToList();
-                    SavingDate.doptov = products[0];//Helper.defaultDbContext.Products.Find((v));
-                    new DoptovRed().Show();
-                    Close(); break;
-            }
-        
-
-    }
-    private void Listins(List<ListDoptov> list)
-    {
-
-
-        DopProd.ItemsSource = list.Select(x => new
+        else
         {
-            x.Id,
-            x.Iddoptow,
-           doptovs[(int)x.Iddoptow-1].Name,
-            doptovs[(int)x.Iddoptow-1].Price,
-            doptovs[(int)x.Iddoptow-1].Photo,
-            photos = new Bitmap($"Assets/{doptovs[(int)x.Iddoptow - 1].Photo}"),
-            //Color = $"{tag[(int)x.IdTag - 1].Color}",
-            //tag[(int)y.IdTag - 1].Color,   
-        });
+            Id.Text = Convert.ToString(SavingDate.doptovs.Count() + 1);
+        }
     }
 }

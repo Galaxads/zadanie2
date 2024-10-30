@@ -18,7 +18,7 @@
 		<ListBox.ItemTemplate>
 			<DataTemplate>
 				<Grid Height="280" Width="300">
-					<StackPanel Background="{Binding Color}" DoubleTapped="StackPanel_DoubleTapped">
+					<StackPanel Background="{Binding Color}" >
 						<TextBlock Margin="50,210,0,0" TextWrapping="Wrap" Text="{Binding Name}"></TextBlock>
 					</StackPanel>
 					<StackPanel>
@@ -26,6 +26,9 @@
 					</StackPanel>
 					<StackPanel>
 						<Image Width="180" Height="190" Source="{Binding photos}"></Image>
+					</StackPanel>
+					<StackPanel>
+						<Button Height="280" Width="300" x:Name="Buts" Tag="{Binding Name}"  Click="Button_Click" Background="Transparent"></Button>
 					</StackPanel>
 				</Grid>
 			</DataTemplate>
@@ -53,6 +56,9 @@
 		</StackPanel>
 		<StackPanel Width="250" Margin="50,60,0,0" HorizontalAlignment="Left">
 			<TextBox Watermark="Поиск"></TextBox>
+		</StackPanel>
+		<StackPanel Width="250" Margin="50,60,0,0" HorizontalAlignment="Left">
+			<Button Content="Новый товар" Margin="0,700,0,0" Click="Button_Click_1"></Button>
 		</StackPanel>
 	</Grid>		
 </Window>

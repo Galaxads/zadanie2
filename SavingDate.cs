@@ -10,7 +10,12 @@ namespace AvaloniaApplication6
     internal class SavingDate
     {
         public static List<Product> products = Helper.defaultDbContext.Products.ToList();
-        public static List<Manuf> manufactrur = Helper.defaultDbContext.Manufs.ToList();
-        public static List<int> tag=[];
+        public static List<Doptov> doptovs = Helper.defaultDbContext.Doptovs.ToList();
+        public static List<ListDoptov> doptovlist = Helper.defaultDbContext.ListDoptovs.ToList();
+        public static List<Manufactured> manufactrur = Helper.defaultDbContext.Manufactureds.ToList();
+        public static List<string> manufactrurs = new List<string>() {"Все товары" };
+        public static Product prods = null;
+        public static Doptov doptov = null;
+
     }
 }

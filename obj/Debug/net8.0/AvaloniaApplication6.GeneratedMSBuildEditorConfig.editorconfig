@@ -28,6 +28,12 @@ build_property.EnableGeneratedComInterfaceComImportInterop =
 [C:/Users/Maxx/source/repos/AvaloniaApplication6/AvaloniaApplication6/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[C:/Users/Maxx/source/repos/AvaloniaApplication6/AvaloniaApplication6/DoptovRed.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/Maxx/source/repos/AvaloniaApplication6/AvaloniaApplication6/ListDopProduct.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/Maxx/source/repos/AvaloniaApplication6/AvaloniaApplication6/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 

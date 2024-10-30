@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AvaloniaApplication6.Models;
 
-public partial class Manuf
+public partial class Manufactured
 {
     public int Id { get; set; }
 
